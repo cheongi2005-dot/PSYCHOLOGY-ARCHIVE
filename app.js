@@ -1,10 +1,13 @@
+/**
+ * 전역 상태 관리
+ */
 let currentChapter = null;
 let quizItems = [];
 let currentIdx = 0;
 let wrongAnswers = new Set();
 
 /**
- * 1. 테마 관리: 사용자 설정 유지 및 전환
+ * 1. 테마 관리 (LocalStorage 활용)
  */
 function initTheme() {
     const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -20,12 +23,14 @@ function toggleTheme() {
 }
 
 /**
- * 2. 초기화: 메인 목차 생성
+ * 2. 앱 초기화: 메인 목차 생성
  */
 function init() {
     const list = document.getElementById('chapter-list');
     if (!list) return;
     list.innerHTML = '';
+    
+    // PSYCHOLOGY_DATA는 data.js에 정의된 전역 변수입니다.
     PSYCHOLOGY_DATA.forEach(ch => {
         const card = document.createElement('div');
         card.className = 'chapter-card';
@@ -38,21 +43,30 @@ function init() {
     });
 }
 
+// 페이지 로드 시 테마와 메인 목록 초기화
 window.onload = () => {
     initTheme();
     init();
 };
 
 /**
- * 3. 화면 및 탭 전환 로직
+ * 3. 화면 전환 및 탭 관리
  */
 function openChapter(ch) {
     currentChapter = ch;
     wrongAnswers.clear();
+    
+    // 메인 화면 숨김 및 학습 화면 표시
     document.getElementById('main-screen').classList.add('hidden');
     document.getElementById('study-screen').classList.remove('hidden');
+    
+    // [핵심] 학습 중에는 테마 버튼을 숨겨 가독성 확보
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) themeBtn.style.display = 'none';
+
     document.getElementById('chapter-title-display').innerText = ch.titleKo;
     
+    // 기본 탭 설정: 요약
     switchTabView('summary');
     renderSummary();
     updateReviewNotes();
@@ -65,6 +79,10 @@ function openChapter(ch) {
 function showMainScreen() {
     document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
     document.getElementById('main-screen').classList.remove('hidden');
+    
+    // 메인으로 돌아올 때 테마 버튼 다시 표시
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) themeBtn.style.display = 'block';
 }
 
 function switchTab(event, tabName) {
@@ -81,7 +99,7 @@ function switchTabView(tabName) {
 }
 
 /**
- * 4. 요약 렌더링: 명제별 카테고리 매핑
+ * 4. 요약 렌더링: 명제 기반 카테고리 매핑
  */
 function renderSummary() {
     const container = document.getElementById('summary-list');
@@ -93,6 +111,7 @@ function renderSummary() {
         return acc;
     }, {});
 
+    // 심리학 학사 공부를 위한 핵심 명제 타이틀
     const categoryLabels = {
         'field': "심리학의 정의 및 분류",
         'scholar': "분트와 현대 심리학의 탄생",
@@ -198,11 +217,11 @@ function renderSummary() {
 }
 
 /**
- * 5. 퀴즈 엔진: 랜덤 20문항 추출 및 인터랙티브 피드백
+ * 5. 퀴즈 엔진
  */
 function startQuiz() {
     const shuffledPool = [...currentChapter.items].sort(() => Math.random() - 0.5);
-    quizItems = shuffledPool.slice(0, 20);
+    quizItems = shuffledPool.slice(0, 20); // 20문항 랜덤 추출
     currentIdx = 0;
     loadQuestion();
 }
@@ -280,7 +299,7 @@ function checkAnswer(btn, selected, correct) {
 }
 
 /**
- * 6. 오답 노트 및 전용 복습 기능
+ * 6. 오답노트 관리
  */
 function updateReviewNotes() {
     const container = document.getElementById('wrong-answer-list');
