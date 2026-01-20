@@ -7,13 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">DARK / LIGHT</button>
+
     <div id="app">
         <section id="main-screen">
             <header class="main-header">
                 <h1>ARCHIVE</h1>
                 <p>PSYCHOLOGY MODULES</p>
             </header>
-            <div id="chapter-list" class="list-container"></div>
+            <div id="chapter-list" class="list-container">
+                </div>
         </section>
 
         <section id="study-screen" class="hidden">
@@ -23,15 +26,16 @@
             </nav>
 
             <div class="tab-menu">
-                <button class="tab-btn active" onclick="switchTab(event, 'summary')">1. 요약</button>
-                <button class="tab-btn" onclick="switchTab(event, 'quiz')">2. 문제풀이</button>
-                <button class="tab-btn" onclick="switchTab(event, 'review')">3. 오답노트</button>
+                <button class="tab-btn active" onclick="switchTab(event, 'summary')">요약</button>
+                <button class="tab-btn" onclick="switchTab(event, 'quiz')">문제풀이</button>
+                <button class="tab-btn" onclick="switchTab(event, 'review')">오답노트</button>
             </div>
 
             <div id="tab-content">
                 <div id="summary-view" class="view-section">
                     <div class="section-label">INSTRUCTION MANUAL</div>
-                    <div id="summary-list"></div>
+                    <div id="summary-list">
+                        </div>
                 </div>
 
                 <div id="quiz-view" class="view-section hidden">
@@ -39,8 +43,11 @@
                         <span id="quiz-progress">00 / 20</span>
                         <button class="refresh-btn" onclick="startQuiz()">RESET</button>
                     </div>
-                    <div class="question-box"><p id="question-text"></p></div>
-                    <div id="quiz-options" class="options-box"></div>
+                    <div class="question-box">
+                        <p id="question-text">문제가 여기에 표시됩니다.</p>
+                    </div>
+                    <div id="quiz-options" class="options-box">
+                        </div>
                 </div>
 
                 <div id="review-view" class="view-section hidden">
@@ -48,11 +55,13 @@
                         <div class="section-label">WRONG ANSWERS</div>
                         <button id="retry-wrong-btn" class="retry-btn" onclick="retryWrongAnswers()">오답 다시 풀기</button>
                     </div>
-                    <div id="wrong-answer-list"></div>
+                    <div id="wrong-answer-list">
+                        </div>
                 </div>
             </div>
         </section>
     </div>
+
     <script src="data.js"></script>
     <script src="app.js"></script>
 </body>

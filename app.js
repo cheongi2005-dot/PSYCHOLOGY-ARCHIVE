@@ -4,7 +4,23 @@ let currentIdx = 0;
 let wrongAnswers = new Set();
 
 /**
- * 앱 초기화: 메인 목차 생성
+ * 1. 테마 초기화 및 전환
+ */
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', targetTheme);
+    localStorage.setItem('theme', targetTheme);
+}
+
+/**
+ * 2. 앱 초기화 및 메인 화면
  */
 function init() {
     const list = document.getElementById('chapter-list');
@@ -22,8 +38,14 @@ function init() {
     });
 }
 
+// 페이지 로드 시 테마와 메인 목록 초기화
+window.onload = () => {
+    initTheme();
+    init();
+};
+
 /**
- * 단원 진입 및 화면 초기화
+ * 3. 단원 관리 및 화면 전환
  */
 function openChapter(ch) {
     currentChapter = ch;
@@ -32,20 +54,20 @@ function openChapter(ch) {
     document.getElementById('study-screen').classList.remove('hidden');
     document.getElementById('chapter-title-display').innerText = ch.titleKo;
     
-    // 초기 탭 설정: 요약
     switchTabView('summary');
     renderSummary();
     updateReviewNotes();
     
-    // 탭 버튼 활성화 상태 동기화
     const btns = document.querySelectorAll('.tab-btn');
     btns.forEach(b => b.classList.remove('active'));
     btns[0].classList.add('active');
 }
 
-/**
- * 탭 전환 로직
- */
+function showMainScreen() {
+    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    document.getElementById('main-screen').classList.remove('hidden');
+}
+
 function switchTab(event, tabName) {
     const btns = document.querySelectorAll('.tab-btn');
     btns.forEach(btn => btn.classList.remove('active'));
@@ -60,29 +82,24 @@ function switchTabView(tabName) {
 }
 
 /**
- * 요약 렌더링: 명제 타이틀 매핑 (수정된 핵심 부분)
+ * 4. 요약 렌더링 (명제 타이틀 매핑)
  */
 function renderSummary() {
     const container = document.getElementById('summary-list');
     if (!container) return;
 
-    // 데이터를 유형(type)별로 그룹화
     const groups = currentChapter.items.reduce((acc, item) => {
         if (!acc[item.type]) acc[item.type] = [];
         acc[item.type].push(item);
         return acc;
     }, {});
 
-    // [중요] 모든 단원의 type을 사용자 정의 명제로 매핑
     const categoryLabels = {
-        // 01 심리학의 본질
         'field': "심리학의 정의 및 분류",
         'scholar': "분트와 현대 심리학의 탄생",
         'theory': "분트의 심리학 및 주요 학파",
         'method': "심리학의 연구방법",
         'variable': "실험의 3요소",
-
-        // 02 행동의 생리적 기초
         'structure': "신경세포의 구조와 전달",
         'system': "중추 신경과 말초 신경",
         'brain': "대뇌 및 주요 뇌 부위",
@@ -91,8 +108,6 @@ function renderSummary() {
         'spinal': "척수의 역할 및 반사",
         'autonomic': "자율 신경(교감/부교감)",
         'condition': "실어증 및 분리 뇌",
-
-        // 03 심리적 발달
         'dev-def': "발달의 정의",
         'dev-method': "발달연구방법",
         'dev-principle': "발달의 원리",
@@ -100,8 +115,6 @@ function renderSummary() {
         'kohlberg': "콜버그의 도덕성 발달단계",
         'freud': "프로이트의 성격발달단계",
         'erikson': "에릭슨의 인간발달단계",
-
-        // 04 동기와 정서
         'motive-def': "동기의 정의 및 분류",
         'maslow': "매슬로우의 욕구 5단계 모형",
         'bio-motive': "생리적 동기 및 항상성",
@@ -109,8 +122,6 @@ function renderSummary() {
         'social-motive': "사회적 동기(친화/달성)",
         'emotion-def': "정서의 정의",
         'emotion-theory': "주요 정서 이론",
-
-        // 05 감각과 지각
         'sens-def': "감각의 정의",
         'sens-meas': "감각의 측정(역치)",
         'sens-law': "감각의 법칙(베버/페히너)",
@@ -124,8 +135,6 @@ function renderSummary() {
         'depth-cue': "3차원 지각(단안/양안)",
         'motion': "운동지각의 종류",
         'attention': "선택적 주의",
-
-        // 06 학습과 기억
         'learn-def': "학습의 심리학적 정의",
         'classical': "고전적 조건형성",
         'operant': "조작적 조건 형성 및 강화",
@@ -134,8 +143,6 @@ function renderSummary() {
         'memory-type': "기억의 종류",
         'ltm-cat': "장기기억의 분류",
         'forgetting': "기억의 망각과 간섭",
-
-        // 07 언어와 사고
         'representation': "명제 표상",
         'concept': "개념과 범주화",
         'theory-lang': "원형이론 및 가족 유사성",
@@ -143,8 +150,6 @@ function renderSummary() {
         'lang-dev': "언어발달과정",
         'problem-solving': "문제 해결 및 추론",
         'fixation': "기능적 고착",
-
-        // 08 정신능력과 측정
         'metric': "신뢰도와 타당도",
         'test-sb': "스탠포드-비네 검사",
         'test-w': "웩슬러 지능검사",
@@ -152,8 +157,6 @@ function renderSummary() {
         'intel-theory': "지능의 구조 및 요인설",
         'guilford': "길포드의 입체모형설",
         'modern-intel': "지능 이론(카텔/가드너/스턴버그)",
-
-        // 09 성격과 측정
         'trait-theory': "성격 특성이론",
         'psycho-level': "프로이트의 정신역동(의식 수준)",
         'psycho-struct': "프로이트의 성격구조",
@@ -161,8 +164,6 @@ function renderSummary() {
         'humanistic': "현상학적 이론(자기이론)",
         'big-five': "성격의 5요인 모델(Big Five)",
         'pers-test': "성격 측정(자기보고/투사법)",
-
-        // 10 적응과 이상행동
         'stress': "욕구좌절과 갈등",
         'conflict': "갈등의 세 가지 유형",
         'defense': "방어기제의 종류",
@@ -170,8 +171,6 @@ function renderSummary() {
         'psychosis': "정신병의 종류",
         'neurotic': "신경증 장애",
         'pers-disorder': "성격장애의 분류",
-
-        // 11 사회적 행동
         'attitude': "태도의 구성요소",
         'attitude-theory': "인지부조화이론",
         'persuasion': "태도변화 및 설득 기법",
@@ -200,7 +199,7 @@ function renderSummary() {
 }
 
 /**
- * 2. 문제풀이: 랜덤 20문항 추출 및 시작
+ * 5. 퀴즈 엔진
  */
 function startQuiz() {
     const shuffledPool = [...currentChapter.items].sort(() => Math.random() - 0.5);
@@ -261,7 +260,6 @@ function checkAnswer(btn, selected, correct) {
         btn.classList.add('wrong');
         btns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
         
-        // 오답 데이터 저장
         const itemData = currentChapter.items.find(i => i.term === correct);
         if (itemData) {
             wrongAnswers.add(itemData);
@@ -274,42 +272,17 @@ function checkAnswer(btn, selected, correct) {
         if (currentIdx < quizItems.length) {
             loadQuestion();
         } else {
-            // [수정] alert("TEST COMPLETED")를 삭제하여 팝업 없이 바로 전환됩니다.
             const tabs = document.querySelectorAll('.tab-btn');
             tabs.forEach(t => t.classList.remove('active'));
-            
-            // 3번째 탭(오답노트) 버튼 활성화 및 화면 전환
             if (tabs[2]) tabs[2].classList.add('active');
             switchTabView('review');
         }
     }, 1200);
 }
 
-function retryWrongAnswers() {
-    if (wrongAnswers.size === 0) return;
-
-    // 1. 오답들만 뽑아서 퀴즈 아이템으로 설정
-    quizItems = Array.from(wrongAnswers).sort(() => Math.random() - 0.5);
-    currentIdx = 0;
-    
-    // 2. 새로운 도전을 위해 기록 초기화
-    wrongAnswers.clear(); 
-    updateReviewNotes();
-
-    // 3. [핵심] startQuiz()를 거치지 않고 직접 화면 전환 및 로드
-    // switchTabView('quiz')를 쓰면 다시 20문항으로 리셋되므로 아래와 같이 수동 전환합니다.
-    document.querySelectorAll('.view-section').forEach(view => view.classList.add('hidden'));
-    document.getElementById('quiz-view').classList.remove('hidden');
-
-    // 4. 첫 번째 오답 로드
-    loadQuestion();
-    
-    // 상단 탭 버튼 상태 동기화
-    const tabs = document.querySelectorAll('.tab-btn');
-    tabs.forEach(t => t.classList.remove('active'));
-    if (tabs[1]) tabs[1].classList.add('active');
-}
-
+/**
+ * 6. 오답 노트 및 복습 기능
+ */
 function updateReviewNotes() {
     const container = document.getElementById('wrong-answer-list');
     if (!container) return;
@@ -325,9 +298,21 @@ function updateReviewNotes() {
     `).join('');
 }
 
-function showMainScreen() {
-    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-    document.getElementById('main-screen').classList.remove('hidden');
-}
+function retryWrongAnswers() {
+    if (wrongAnswers.size === 0) return;
 
-window.onload = init;
+    quizItems = Array.from(wrongAnswers).sort(() => Math.random() - 0.5);
+    currentIdx = 0;
+    
+    wrongAnswers.clear(); 
+    updateReviewNotes();
+
+    document.querySelectorAll('.view-section').forEach(view => view.classList.add('hidden'));
+    document.getElementById('quiz-view').classList.remove('hidden');
+
+    loadQuestion();
+    
+    const tabs = document.querySelectorAll('.tab-btn');
+    tabs.forEach(t => t.classList.remove('active'));
+    if (tabs[1]) tabs[1].classList.add('active');
+}
