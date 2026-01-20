@@ -4,7 +4,7 @@ let currentIdx = 0;
 let wrongAnswers = new Set();
 
 /**
- * 1. 테마 초기화 및 전환
+ * 1. 테마 관리: 사용자 설정 유지 및 전환
  */
 function initTheme() {
     const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -20,7 +20,7 @@ function toggleTheme() {
 }
 
 /**
- * 2. 앱 초기화 및 메인 화면
+ * 2. 초기화: 메인 목차 생성
  */
 function init() {
     const list = document.getElementById('chapter-list');
@@ -38,14 +38,13 @@ function init() {
     });
 }
 
-// 페이지 로드 시 테마와 메인 목록 초기화
 window.onload = () => {
     initTheme();
     init();
 };
 
 /**
- * 3. 단원 관리 및 화면 전환
+ * 3. 화면 및 탭 전환 로직
  */
 function openChapter(ch) {
     currentChapter = ch;
@@ -82,7 +81,7 @@ function switchTabView(tabName) {
 }
 
 /**
- * 4. 요약 렌더링 (명제 타이틀 매핑)
+ * 4. 요약 렌더링: 명제별 카테고리 매핑
  */
 function renderSummary() {
     const container = document.getElementById('summary-list');
@@ -199,7 +198,7 @@ function renderSummary() {
 }
 
 /**
- * 5. 퀴즈 엔진
+ * 5. 퀴즈 엔진: 랜덤 20문항 추출 및 인터랙티브 피드백
  */
 function startQuiz() {
     const shuffledPool = [...currentChapter.items].sort(() => Math.random() - 0.5);
@@ -281,7 +280,7 @@ function checkAnswer(btn, selected, correct) {
 }
 
 /**
- * 6. 오답 노트 및 복습 기능
+ * 6. 오답 노트 및 전용 복습 기능
  */
 function updateReviewNotes() {
     const container = document.getElementById('wrong-answer-list');
