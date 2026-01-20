@@ -30,42 +30,46 @@ body {
 #app { max-width: 450px; margin: 0 auto; padding: 40px 24px; }
 .hidden { display: none !important; }
 
-/* 테마 토글 버튼: 모바일 최적화 */
+/* 테마 토글 버튼: 모바일 노치 및 시인성 최적화 */
 .theme-toggle-btn {
     position: fixed;
-    top: 15px; /* 모바일 상단 바를 고려해 약간 조정 */
+    /* 노치 및 상태바를 고려한 상단 여백 설정 */
+    top: calc(15px + env(safe-area-inset-top)); 
     right: 15px;
     
-    /* 배경색을 현재 테마의 배경색과 동일하게 설정하여 겹침 방지 */
+    /* 준지 스타일의 절제된 미니멀 배경 */
     background-color: var(--bg-color); 
     border: 1px solid var(--text-sub);
     color: var(--text-sub);
     
-    /* 터치하기 편하도록 크기 및 패딩 조정 */
-    padding: 8px 12px; 
-    min-width: 80px;
+    /* 터치 실수를 방지하기 위한 여유 있는 크기 */
+    padding: 10px 14px; 
+    min-width: 90px;
     
     cursor: pointer;
     font-size: 0.65rem;
     font-family: 'Syncopate', sans-serif;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     
-    /* 어떤 요소보다 위에 오도록 설정 */
-    z-index: 9999; 
+    /* 모든 요소보다 위에 표시되도록 설정 */
+    z-index: 10000; 
     
-    /* 테두리를 아주 살짝 둥글게 (직각 느낌 유지) */
+    /* 고급스러운 매트 디자인 반영 */
     border-radius: 2px;
-    
-    /* 모바일에서 버튼임을 알 수 있도록 은은한 그림자 추가 */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     
     transition: all 0.3s ease;
     text-transform: uppercase;
 }
 
-/* 라이트 모드일 때 그림자 색상 조정 */
+/* 라이트 모드에서의 버튼 그림자 최적화 */
 :root[data-theme="light"] .theme-toggle-btn {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle-btn:hover {
+    color: var(--text-main);
+    border-color: var(--text-main);
 }
 
 /* 배너 디자인 */
