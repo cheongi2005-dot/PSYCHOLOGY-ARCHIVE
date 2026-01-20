@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">DARK / LIGHT</button>
-
     <div id="app">
         <section id="main-screen">
+            <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">DARK / LIGHT</button>
+
             <header class="main-header">
                 <h1>ARCHIVE</h1>
                 <p>PSYCHOLOGY MODULES</p>
@@ -34,8 +34,7 @@
             <div id="tab-content">
                 <div id="summary-view" class="view-section">
                     <div class="section-label">INSTRUCTION MANUAL</div>
-                    <div id="summary-list">
-                        </div>
+                    <div id="summary-list"></div>
                 </div>
 
                 <div id="quiz-view" class="view-section hidden">
@@ -46,8 +45,7 @@
                     <div class="question-box">
                         <p id="question-text">문제가 여기에 표시됩니다.</p>
                     </div>
-                    <div id="quiz-options" class="options-box">
-                        </div>
+                    <div id="quiz-options" class="options-box"></div>
                 </div>
 
                 <div id="review-view" class="view-section hidden">
@@ -55,8 +53,7 @@
                         <div class="section-label">WRONG ANSWERS</div>
                         <button id="retry-wrong-btn" class="retry-btn" onclick="retryWrongAnswers()">오답 다시 풀기</button>
                     </div>
-                    <div id="wrong-answer-list">
-                        </div>
+                    <div id="wrong-answer-list"></div>
                 </div>
             </div>
         </section>
