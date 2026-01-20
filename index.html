@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSYCHOLOGY ARCHIVE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <section id="main-screen">
+            <header class="main-header">
+                <h1>ARCHIVE</h1>
+                <p>PSYCHOLOGY MODULES</p>
+            </header>
+            <div id="chapter-list" class="list-container"></div>
+        </section>
+
+        <section id="study-screen" class="hidden">
+            <nav class="top-nav">
+                <button onclick="showMainScreen()">← CLOSE</button>
+                <h2 id="chapter-title-display">TITLE</h2>
+            </nav>
+
+            <div class="tab-menu">
+                <button class="tab-btn active" onclick="switchTab(event, 'summary')">1. 요약</button>
+                <button class="tab-btn" onclick="switchTab(event, 'quiz')">2. 문제풀이</button>
+                <button class="tab-btn" onclick="switchTab(event, 'review')">3. 오답노트</button>
+            </div>
+
+            <div id="tab-content">
+                <div id="summary-view" class="view-section">
+                    <div class="section-label">INSTRUCTION MANUAL</div>
+                    <div id="summary-list"></div>
+                </div>
+
+                <div id="quiz-view" class="view-section hidden">
+                    <div class="quiz-header">
+                        <span id="quiz-progress">00 / 20</span>
+                        <button class="refresh-btn" onclick="startQuiz()">RESET</button>
+                    </div>
+                    <div class="question-box"><p id="question-text"></p></div>
+                    <div id="quiz-options" class="options-box"></div>
+                </div>
+
+                <div id="review-view" class="view-section hidden">
+                    <div class="section-label">WRONG ANSWERS</div>
+                    <div id="wrong-answer-list"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
