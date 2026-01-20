@@ -47,3 +47,32 @@ body { background: var(--black); color: var(--white); font-family: 'Pretendard',
 .review-term { color: #f44; font-weight: 700; display: block; margin-bottom: 5px; font-size: 1.1rem; }
 .review-desc { font-size: 0.9rem; color: #999; line-height: 1.5; }
 .section-label { font-size: 9px; color: var(--dim); letter-spacing: 2px; margin-bottom: 25px; font-family: 'Syncopate', sans-serif; }
+
+/* 오답노트 상단 레이아웃 */
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+/* 오답 다시 풀기 버튼 스타일 */
+.retry-btn {
+    background: none;
+    border: 1px solid var(--white);
+    color: var(--white);
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.retry-btn:hover {
+    background: var(--white);
+    color: var(--black);
+}

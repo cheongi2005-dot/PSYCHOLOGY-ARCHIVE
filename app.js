@@ -261,6 +261,7 @@ function checkAnswer(btn, selected, correct) {
         btn.classList.add('wrong');
         btns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
         
+        // 오답 데이터 저장
         const itemData = currentChapter.items.find(i => i.term === correct);
         if (itemData) {
             wrongAnswers.add(itemData);
@@ -273,13 +274,40 @@ function checkAnswer(btn, selected, correct) {
         if (currentIdx < quizItems.length) {
             loadQuestion();
         } else {
-            alert("TEST COMPLETED");
+            // [수정] alert("TEST COMPLETED")를 삭제하여 팝업 없이 바로 전환됩니다.
             const tabs = document.querySelectorAll('.tab-btn');
             tabs.forEach(t => t.classList.remove('active'));
-            tabs[2].classList.add('active');
+            
+            // 3번째 탭(오답노트) 버튼 활성화 및 화면 전환
+            if (tabs[2]) tabs[2].classList.add('active');
             switchTabView('review');
         }
     }, 1200);
+}
+
+function retryWrongAnswers() {
+    if (wrongAnswers.size === 0) return;
+
+    // 1. 오답들만 뽑아서 퀴즈 아이템으로 설정
+    quizItems = Array.from(wrongAnswers).sort(() => Math.random() - 0.5);
+    currentIdx = 0;
+    
+    // 2. 새로운 도전을 위해 기록 초기화
+    wrongAnswers.clear(); 
+    updateReviewNotes();
+
+    // 3. [핵심] startQuiz()를 거치지 않고 직접 화면 전환 및 로드
+    // switchTabView('quiz')를 쓰면 다시 20문항으로 리셋되므로 아래와 같이 수동 전환합니다.
+    document.querySelectorAll('.view-section').forEach(view => view.classList.add('hidden'));
+    document.getElementById('quiz-view').classList.remove('hidden');
+
+    // 4. 첫 번째 오답 로드
+    loadQuestion();
+    
+    // 상단 탭 버튼 상태 동기화
+    const tabs = document.querySelectorAll('.tab-btn');
+    tabs.forEach(t => t.classList.remove('active'));
+    if (tabs[1]) tabs[1].classList.add('active');
 }
 
 function updateReviewNotes() {
