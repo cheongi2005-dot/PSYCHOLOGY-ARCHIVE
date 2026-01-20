@@ -6,7 +6,7 @@
     --bg-color: #0D0D0D;      /* 묵직한 딥 블랙 */
     --border-color: #1A1A1A;
     --text-main: #E9ECEF;     /* 톤다운된 실버 화이트 */
-    --text-sub: #868E96;      /* 시그니처 그레이 */
+    --text-sub: #868E96;      /* 요청하신 시그니처 그레이 */
     --accent-red: #C92A2A; 
 }
 
@@ -31,40 +31,35 @@ body {
 #app { max-width: 450px; margin: 0 auto; padding: 40px 24px; }
 .hidden { display: none !important; }
 
-/* 테마 토글 버튼 스타일 수정 */
+/* 3. 섹션 관리: 버튼이 메인에서만 보이도록 설정 */
+#main-screen {
+    position: relative; /* 버튼 배치를 위한 기준점 */
+    min-height: 80vh;
+}
+
+/* 4. 테마 토글 버튼: 모바일 시인성 및 겹침 방지 */
 .theme-toggle-btn {
-    position: absolute; /* fixed 대신 absolute로 변경하여 메인 화면 안에서만 작동 */
+    /* absolute 설정으로 부모(#main-screen)가 숨겨지면 함께 숨겨짐 */
+    position: absolute; 
     top: 20px;
-    right: 20px;
+    right: 0px; 
     
-    background-color: var(--bg-color);
+    background-color: var(--bg-color); 
     border: 1px solid var(--text-sub);
     color: var(--text-sub);
     
-    padding: 8px 12px;
+    padding: 8px 12px; 
     min-width: 85px;
+    
     cursor: pointer;
     font-size: 0.65rem;
     font-family: 'Syncopate', sans-serif;
     letter-spacing: 1.5px;
-    z-index: 100;
+    
+    z-index: 1000; 
     border-radius: 2px;
-    text-transform: uppercase;
     transition: all 0.2s ease;
-}
-
-/* 모바일 화면(450px 이하) 전용 추가 보정 */
-@media (max-width: 450px) {
-    .theme-toggle-btn {
-        top: 15px;
-        right: 15px;
-        padding: 6px 10px;
-        font-size: 0.6rem;
-    }
-}
-
-:root[data-theme="light"] .theme-toggle-btn {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-transform: uppercase;
 }
 
 .theme-toggle-btn:hover {
@@ -72,7 +67,7 @@ body {
     border-color: var(--text-main);
 }
 
-/* 4. 헤더 및 단원 리스트 */
+/* 5. 메인 헤더 및 단원 리스트 */
 .main-header { margin-bottom: 60px; }
 .main-header h1 { font-family: 'Syncopate', sans-serif; font-size: 1.1rem; letter-spacing: 4px; margin: 0; }
 .main-header p { font-size: 9px; letter-spacing: 2px; color: var(--text-sub); margin: 0; }
@@ -81,7 +76,7 @@ body {
 .chapter-card .ch-en { font-size: 9px; color: var(--text-sub); letter-spacing: 1.5px; margin-bottom: 4px; font-family: 'Syncopate', sans-serif; text-transform: uppercase; }
 .chapter-card .ch-ko { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.5px; }
 
-/* 5. 메뉴 및 내비게이션 */
+/* 6. 탭 메뉴 및 학습 상단바 */
 .tab-menu { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--border-color); margin-bottom: 30px; }
 .tab-btn { background: none; border: none; color: var(--text-sub); padding: 15px 0; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: 0.2s; }
 .tab-btn.active { color: var(--text-main); border-bottom: 2px solid var(--text-main); }
@@ -90,28 +85,38 @@ body {
 .top-nav button { background: none; border: none; color: var(--text-main); font-size: 10px; letter-spacing: 2px; cursor: pointer; font-family: 'Syncopate', sans-serif; }
 #chapter-title-display { font-size: 1.15rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
 
-/* 6. 요약 뷰 */
+/* 7. 요약 섹션 */
 .category-group { margin-bottom: 50px; }
 .category-title { font-family: 'Syncopate', sans-serif; font-size: 9px; font-weight: 700; color: var(--text-main); letter-spacing: 2px; border-bottom: 1px solid var(--text-main); padding-bottom: 8px; margin-bottom: 25px; text-transform: uppercase; }
 .summary-item { display: flex; flex-direction: column; gap: 6px; margin-bottom: 22px; padding-left: 5px; }
 .summary-term { font-size: 1.15rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; }
 .summary-desc { font-size: 0.9rem; color: var(--text-sub); line-height: 1.6; font-weight: 300; }
 
-/* 7. 퀴즈 뷰 */
+/* 8. 퀴즈 엔진 UI */
 .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 11px; color: var(--text-sub); letter-spacing: 1px; }
 .refresh-btn { background: none; border: 1px solid var(--text-sub); color: var(--text-sub); font-size: 8px; padding: 2px 8px; cursor: pointer; border-radius: 2px; }
 .question-box { min-height: 200px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 1.35rem; font-weight: 300; line-height: 1.75; }
 .options-box { display: grid; gap: 8px; }
 .option-btn { width: 100%; padding: 18px; background: none; border: 1px solid var(--border-color); color: var(--text-sub); text-align: left; cursor: pointer; border-radius: 4px; font-size: 1rem; transition: 0.2s; }
+
+/* 정답/오답 피드백 */
 .option-btn.correct { background: var(--text-main) !important; color: var(--bg-color) !important; font-weight: 700; border-color: var(--text-main) !important; }
 .option-btn.wrong { color: var(--accent-red) !important; border-color: var(--accent-red) !important; background: rgba(201, 42, 42, 0.05); }
 
-/* 8. 오답노트 뷰 */
+/* 9. 오답노트 디자인 */
 .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
 .review-item { padding: 18px; border-left: 2px solid var(--accent-red); background: rgba(201, 42, 42, 0.05); margin-bottom: 12px; border-radius: 2px; }
 .review-term { color: var(--accent-red); font-weight: 700; display: block; margin-bottom: 5px; font-size: 1.1rem; }
 .review-desc { font-size: 0.9rem; color: var(--text-sub); line-height: 1.5; }
 .section-label { font-size: 9px; color: var(--text-sub); letter-spacing: 2px; margin-bottom: 25px; font-family: 'Syncopate', sans-serif; }
 
+/* 오답 다시 풀기 버튼 */
 .retry-btn { background: none; border: 1px solid var(--text-main); color: var(--text-main); padding: 6px 14px; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
 .retry-btn:hover { background: var(--text-main); color: var(--bg-color); }
+
+/* 10. 모바일 미세 조정 */
+@media (max-width: 450px) {
+    #app { padding: 30px 20px; }
+    .theme-toggle-btn { top: 15px; right: 0px; padding: 6px 10px; font-size: 0.6rem; }
+    .chapter-card .ch-ko { font-size: 1.3rem; }
+}
